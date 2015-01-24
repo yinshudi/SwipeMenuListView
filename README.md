@@ -3,7 +3,9 @@ SwipeMenuListView
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-SwipeMenuListView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/912)
 
 forked from baoyongzhang/SwipeMenuListView
+
 change log :
+
 1. add two method in OnSwipeListener; to listen menu open and close;
 2. when you click item,if menu is opened now,close it and return.
 
