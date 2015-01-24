@@ -127,11 +127,11 @@ public class SwipeMenuListView extends ListView {
 
 			View view = getChildAt(mTouchPosition - getFirstVisiblePosition());
 
-			if (mTouchView != null && mTouchView.isOpen()) {
-				mTouchView.smoothCloseMenu();
-				mTouchView = null;
-				return super.onTouchEvent(ev);
-			}
+//			if (mTouchView != null && mTouchView.isOpen()) {
+//				mTouchView.smoothCloseMenu();
+//				mTouchView = null;
+//				return super.onTouchEvent(ev);
+//			}
 			if (view instanceof SwipeMenuLayout) {
 				mTouchView = (SwipeMenuLayout) view;
 			}
@@ -165,7 +165,10 @@ public class SwipeMenuListView extends ListView {
 			if (mTouchState == TOUCH_STATE_X) {
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
-					if (!mTouchView.isOpen()) {
+					if(mTouchView.isOpen()){
+						mOnSwipeListener.onMenuOpen(mTouchPosition);
+					}else{
+						mOnSwipeListener.onMenuClose(mTouchPosition);
 						mTouchPosition = -1;
 						mTouchView = null;
 					}
@@ -214,7 +217,23 @@ public class SwipeMenuListView extends ListView {
 	public void setOnSwipeListener(OnSwipeListener onSwipeListener) {
 		this.mOnSwipeListener = onSwipeListener;
 	}
-
+	
+	@Override
+	public void setOnItemClickListener(final OnItemClickListener listener) {
+		super.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+				if(mTouchView != null && mTouchView.isOpen()){	//if menu is opened,close it;
+					mTouchView.smoothCloseMenu();
+					mTouchView = null;
+					mOnSwipeListener.onMenuClose(mTouchPosition);
+				}else{
+					listener.onItemClick(parent,view,position,id);
+				}
+			}
+		});
+	}
+	
 	public static interface OnMenuItemClickListener {
 		boolean onMenuItemClick(int position, SwipeMenu menu, int index);
 	}
@@ -223,5 +242,9 @@ public class SwipeMenuListView extends ListView {
 		void onSwipeStart(int position);
 
 		void onSwipeEnd(int position);
+		
+		void onMenuOpen(int position);
+		
+		void onMenuClose(int position);
 	}
 }
