@@ -54,6 +54,7 @@ public class SwipeMenuListView extends ListView {
 		MAX_X = dp2px(MAX_X);
 		MAX_Y = dp2px(MAX_Y);
 		mTouchState = TOUCH_STATE_NONE;
+		setOnItemClickListener(null);
 	}
 
 	@Override
@@ -229,8 +230,10 @@ public class SwipeMenuListView extends ListView {
 				if(mTouchView != null && mTouchView.isOpen()){	//if menu is opened,close it;
 					mTouchView.smoothCloseMenu();
 					mTouchView = null;
-					mOnSwipeListener.onMenuClose(mTouchPosition);
+					if(mOnSwipeListener != null)
+						mOnSwipeListener.onMenuClose(mTouchPosition);
 				}else{
+					if(listener == null) return;
 					listener.onItemClick(parent,view,position,id);
 				}
 			}
