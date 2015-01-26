@@ -1,4 +1,3 @@
-package com.baoyz.swipemenulistview;
 
 import android.content.Context;
 import android.support.v4.view.MotionEventCompat;
@@ -166,9 +165,13 @@ public class SwipeMenuListView extends ListView {
 				if (mTouchView != null) {
 					mTouchView.onSwipe(ev);
 					if(mTouchView.isOpen()){
-						mOnSwipeListener.onMenuOpen(mTouchPosition);
+						if (mOnSwipeListener != null) {
+							mOnSwipeListener.onMenuOpen(mTouchPosition);
+						}
 					}else{
-						mOnSwipeListener.onMenuClose(mTouchPosition);
+						if (mOnSwipeListener != null) {
+							mOnSwipeListener.onMenuClose(mTouchPosition);
+						}
 						mTouchPosition = -1;
 						mTouchView = null;
 					}
