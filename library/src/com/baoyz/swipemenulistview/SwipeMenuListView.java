@@ -34,6 +34,7 @@ public class SwipeMenuListView extends ListView {
 	private OnMenuItemClickListener mOnMenuItemClickListener;
 	private Interpolator mCloseInterpolator;
 	private Interpolator mOpenInterpolator;
+	private int openingMenuPosition;
 
 	public SwipeMenuListView(Context context) {
 		super(context);
@@ -168,9 +169,10 @@ public class SwipeMenuListView extends ListView {
 					if(mTouchView.isOpen()){
 						if (mOnSwipeListener != null) {
 							mOnSwipeListener.onMenuOpen(mTouchPosition);
+							openingMenuPosition = mTouchPosition;
 						}
 					}else{
-						if (mOnSwipeListener != null) {
+						if (mOnSwipeListener != null && mTouchPosition == openingMenuPosition) {
 							mOnSwipeListener.onMenuClose(mTouchPosition);
 						}
 						mTouchPosition = -1;
